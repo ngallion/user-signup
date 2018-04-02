@@ -25,19 +25,15 @@ def submit():
 
     if username == '':
         username_error = "Please enter a username"
-    elif re.match("^[a-zA-Z0-9_.-]+$", username) is None:
+    elif re.match("^[a-zA-Z0-9_.-]{3,20}$", username) is None:
         username_error = "Invalid username"
-    elif len(username) < 3 or len(username) > 20:
-        username_error = "Username must be between 3 and 20 characters"
     elif password == '':
         password_error = "Please enter a password"
-    elif len(password) < 3 or len(password) > 20:
-        password_error = "Password must be between 3 and 20 characters"
-    elif re.match("^[a-zA-Z0-9_.-]+$", password) is None:
+    elif re.match("^[a-zA-Z0-9_.-]{3,20}$", password) is None:
         password_error = "Invalid password"
     elif verify != password:
         verify_error = "Passwords do not match"
-    elif re.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$", email) is None and email != '':
+    elif re.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$", email) is None and email != '':
         email_error = "Invalid email"
     else:
         return redirect('/welcome?user={0}'.format(username))
