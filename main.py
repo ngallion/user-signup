@@ -29,22 +29,27 @@ def submit():
         username_error = "Invalid username"
     elif len(username) < 3 or len(username) > 20:
         username_error = "Username must be between 3 and 20 characters"
-
-    if email == '':
-        email_error = "Please enter an email address"
-    # elif re.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]$", email) is None:
-    #     email_error = "Invalid email"
-
-    if password == '':
+    elif password == '':
         password_error = "Please enter a password"
-    # elif re.match(("^[a-zA-Z0-9_.-]+$", password)) is None:
-    #     password_error = "Invalid password"
-
-    if verify != password:
+    elif len(password) < 3 or len(password) > 20:
+        password_error = "Password must be between 3 and 20 characters"
+    elif re.match("^[a-zA-Z0-9_.-]+$", password) is None:
+        password_error = "Invalid password"
+    elif verify != password:
         verify_error = "Passwords do not match"
+    elif re.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$", email) is None and email != '':
+        email_error = "Invalid email"
+    else:
+        return redirect('/welcome?user={0}'.format(username))
 
     return render_template('signup_form.html', username=username, username_error=username_error, 
         password_error=password_error, verify_error=verify_error, email=email,  
         email_error=email_error)
+
+@app.route('/welcome', methods=['GET'])
+def welcome():
+    username = request.args.get('user')
+    return render_template('welcome.html', username=username)
+
 
 app.run()
