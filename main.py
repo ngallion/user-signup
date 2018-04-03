@@ -25,22 +25,24 @@ def submit():
 
     if username == '':
         username_error = "Please enter a username"
-    elif re.match("^[a-zA-Z0-9_.-]{3,20}$", username) is None:
+    if re.match("^[a-zA-Z0-9_.-]{3,20}$", username) is None:
         username_error = "Invalid username"
-    elif password == '':
+    if password == '':
         password_error = "Please enter a password"
-    elif re.match("^[a-zA-Z0-9_.-]{3,20}$", password) is None:
+    if re.match("^[a-zA-Z0-9_.-]{3,20}$", password) is None:
         password_error = "Invalid password"
-    elif verify != password:
+    if verify != password:
         verify_error = "Passwords do not match"
-    elif re.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$", email) is None and email != '':
+    if re.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email) is None and email != '':
         email_error = "Invalid email"
-    else:
+    
+    if not username_error and not password_error and not verify_error and not email_error:
         return redirect('/welcome?user={0}'.format(username))
-
-    return render_template('signup_form.html', username=username, username_error=username_error, 
+    else:
+        return render_template('signup_form.html', username=username, username_error=username_error, 
         password_error=password_error, verify_error=verify_error, email=email,  
         email_error=email_error)
+    
 
 @app.route('/welcome', methods=['GET'])
 def welcome():
